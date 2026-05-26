@@ -1,4 +1,4 @@
-# Phase I: Transcriptomic Target Validation
+# Phase Ia: Transcriptomic Target Validation
 
 This module executes the cross-dataset weighted meta-analysis of Alzheimer's disease brain tissue and cellular models to identify robust transcriptional signatures and validate primary molecular targets (MAPT and GSK3B).
 
