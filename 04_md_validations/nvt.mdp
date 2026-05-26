@@ -1,0 +1,37 @@
+; ============================================================
+; nvt.mdp — NVT equilibration, 0.5 ns, position restrained
+; ============================================================
+title                   = NVT Equilibration
+define                  = -DPOSRES
+
+integrator              = md
+dt                      = 0.002
+nsteps                  = 250000        ; 0.5 ns
+
+nstxout-compressed      = 5000
+nstenergy               = 1000
+nstlog                  = 1000
+
+constraints             = h-bonds
+constraint-algorithm    = lincs
+
+cutoff-scheme           = Verlet
+nstlist                 = 20
+rcoulomb                = 1.2
+rvdw                    = 1.2
+rvdw-switch             = 1.0
+vdw-modifier            = force-switch
+coulombtype             = PME
+fourierspacing          = 0.12
+
+tcoupl                  = V-rescale
+tc-grps                 = System
+tau-t                   = 1.0
+ref-t                   = 310
+
+pcoupl                  = no
+
+pbc                     = xyz
+gen-vel                 = yes
+gen-temp                = 310
+gen-seed                = -1

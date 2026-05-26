@@ -1,0 +1,7 @@
+; ============================================================
+; ions.mdp — single-point for grompp before genion
+; ============================================================
+integrator      = steep
+nsteps          = 0
+cutoff-scheme   = Verlet
+pbc             = xyz

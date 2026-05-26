@@ -1,0 +1,39 @@
+; ============================================================
+; md.mdp — Production MD, 200 ns
+; ============================================================
+title                   = Production MD
+
+integrator              = md
+dt                      = 0.002
+nsteps                  = 100000000     ; 200 ns
+
+nstxout-compressed      = 5000          ; save frame every 10 ps
+nstenergy               = 5000
+nstlog                  = 5000
+
+constraints             = h-bonds
+constraint-algorithm    = lincs
+
+cutoff-scheme           = Verlet
+nstlist                 = 20
+rcoulomb                = 1.2
+rvdw                    = 1.2
+rvdw-switch             = 1.0
+vdw-modifier            = force-switch
+coulombtype             = PME
+fourierspacing          = 0.12
+
+tcoupl                  = V-rescale
+tc-grps                 = System
+tau-t                   = 1.0
+ref-t                   = 310
+
+pcoupl                  = Parrinello-Rahman
+pcoupltype              = isotropic
+tau-p                   = 2.0
+ref-p                   = 1.0
+compressibility         = 4.5e-5
+
+pbc                     = xyz
+gen-vel                 = no
+continuation            = yes

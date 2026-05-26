@@ -1,0 +1,42 @@
+; ============================================================
+; npt1.mdp — NPT Phase 1, 2 ns, position restrained, Berendsen
+; Berendsen here for gentle initial pressure coupling —
+; switch to Parrinello-Rahman only after volume is stable
+; ============================================================
+title                   = NPT Equilibration Phase 1 (restrained)
+define                  = -DPOSRES
+
+integrator              = md
+dt                      = 0.002
+nsteps                  = 1000000       ; 2 ns
+
+nstxout-compressed      = 5000
+nstenergy               = 1000
+nstlog                  = 1000
+
+constraints             = h-bonds
+constraint-algorithm    = lincs
+
+cutoff-scheme           = Verlet
+nstlist                 = 20
+rcoulomb                = 1.2
+rvdw                    = 1.2
+rvdw-switch             = 1.0
+vdw-modifier            = force-switch
+coulombtype             = PME
+fourierspacing          = 0.12
+
+tcoupl                  = V-rescale
+tc-grps                 = System
+tau-t                   = 1.0
+ref-t                   = 310
+
+refcoord_scaling        = com
+pcoupl                  = C-rescale
+pcoupltype              = isotropic
+tau-p                   = 2.0
+ref-p                   = 1.0
+compressibility         = 4.5e-5
+
+pbc                     = xyz
+gen-vel                 = no
