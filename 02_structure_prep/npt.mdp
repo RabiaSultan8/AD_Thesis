@@ -1,0 +1,49 @@
+; npt.mdp - 5 ns NPT equilibration with backbone restraints
+title                   = NPT Equilibration (5 ns)
+define                  = -DPOSRES_BB   ; Apply position restraints to protein backbone only
+
+; --- RUN PARAMETERS ---
+integrator              = md
+nsteps                  = 2500000       ; 5 ns (2,500,000 steps * 2 fs/step)
+dt                      = 0.002
+
+; --- OUTPUT CONTROL ---
+nstxout-compressed      = 5000          ; Save compressed coordinates every 10 ps
+nstenergy               = 5000          ; Save energies every 10 ps
+nstlog                  = 5000          ; Update log file every 10 ps
+
+; --- CONSTRAINTS & CONTINUATION ---
+continuation            = yes           ; Continue from NVT state
+constraints             = h-bonds
+constraint_algorithm    = lincs
+lincs_iter              = 1
+lincs_order             = 4
+
+; --- NEIGHBOR SEARCHING & INTERACTIONS ---
+cutoff-scheme           = Verlet
+ns_type                 = grid
+nstlist                 = 40
+pbc                     = xyz
+rcoulomb                = 1.2
+rvdw                    = 1.2
+
+; --- ELECTROSTATICS ---
+coulombtype             = PME
+pme_order               = 4
+fourierspacing          = 0.12          ; **CRITICAL: Consistent, high-accuracy PME grid**
+
+; --- TEMPERATURE COUPLING ---
+tcoupl                  = V-rescale
+tc-grps                 = Protein Non-Protein
+tau_t                   = 1.0     1.0   ; **CRITICAL: Consistent, natural temperature coupling**
+ref_t                   = 310     310
+
+; --- PRESSURE COUPLING ---
+pcoupl                  = Parrinello-Rahman ; Robust barostat for production runs
+pcoupltype              = isotropic     ; Uniform pressure scaling
+tau_p                   = 2.0           ; Standard pressure coupling time constant (ps)
+ref_p                   = 1.0           ; Reference pressure in bar
+compressibility         = 4.5e-5        ; Isothermal compressibility of water (bar^-1)
+
+; --- VELOCITY GENERATION ---
+gen_vel                 = no            ; Do not regenerate velocities

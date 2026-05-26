@@ -1,0 +1,49 @@
+; md.mdp - 500 ns Production MD
+title                   = Production MD (500 ns)
+
+; --- RUN PARAMETERS ---
+integrator              = md
+nsteps                  = 250000000     ; 500 ns (250,000,000 steps * 2 fs/step)
+dt                      = 0.002
+
+; --- OUTPUT CONTROL (Safe and Informative) ---
+nstxout-compressed      = 50000         ; Save coordinates every 100 ps (balances file size and detail)
+nstenergy               = 5000          ; Save energies every 10 ps for good monitoring
+nstlog                  = 5000          ; Update log file every 10 ps for monitoring
+
+; --- CONSTRAINTS & CONTINUATION ---
+continuation            = yes           ; Continue from NPT state
+constraints             = h-bonds
+constraint_algorithm    = lincs
+lincs_iter              = 1
+lincs_order             = 4
+
+; --- NEIGHBOR SEARCHING & INTERACTIONS ---
+cutoff-scheme           = Verlet
+ns_type                 = grid
+nstlist                 = 40
+pbc                     = xyz
+rcoulomb                = 1.2
+rvdw                    = 1.2
+DispCorr                = EnerPres      ; Apply dispersion correction for vdW cutoffs
+
+; --- ELECTROSTATICS ---
+coulombtype             = PME
+pme_order               = 4
+fourierspacing          = 0.12          ; **CRITICAL: Consistent, high-accuracy PME grid**
+
+; --- TEMPERATURE COUPLING ---
+tcoupl                  = V-rescale
+tc-grps                 = Protein Non-Protein
+tau_t                   = 1.0     1.0   ; **CRITICAL: Consistent, natural temperature coupling**
+ref_t                   = 310     310
+
+; --- PRESSURE COUPLING ---
+pcoupl                  = Parrinello-Rahman
+pcoupltype              = isotropic
+tau_p                   = 2.0
+ref_p                   = 1.0
+compressibility         = 4.5e-5
+
+; --- VELOCITY GENERATION ---
+gen_vel                 = no

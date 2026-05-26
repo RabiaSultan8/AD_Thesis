@@ -1,0 +1,46 @@
+; nvt.mdp - 1 ns NVT equilibration with strong position restraints
+title                   = NVT Equilibration (1 ns)
+define                  = -DPOSRES      ; Apply position restraints to protein heavy atoms
+
+; --- RUN PARAMETERS ---
+integrator              = md            ; Leap-frog integrator for molecular dynamics
+nsteps                  = 500000        ; 1 ns (500,000 steps * 2 fs/step)
+dt                      = 0.002         ; 2 fs timestep
+
+; --- OUTPUT CONTROL ---
+nstxout-compressed      = 5000          ; Save compressed coordinates every 10 ps
+nstenergy               = 5000          ; Save energies every 10 ps
+nstlog                  = 5000          ; Update log file every 10 ps
+
+; --- CONSTRAINTS ---
+constraints             = h-bonds       ; Constrain bonds to hydrogen for a 2 fs timestep
+constraint_algorithm    = lincs         ; LINCS algorithm for constraints
+lincs_iter              = 1
+lincs_order             = 4
+
+; --- NEIGHBOR SEARCHING & INTERACTIONS ---
+cutoff-scheme           = Verlet
+ns_type                 = grid
+nstlist                 = 40
+pbc                     = xyz
+rcoulomb                = 1.2
+rvdw                    = 1.2
+
+; --- ELECTROSTATICS ---
+coulombtype             = PME
+pme_order               = 4
+fourierspacing          = 0.12          ; **CRITICAL: Finer grid for higher accuracy. Justifiable.**
+
+; --- TEMPERATURE COUPLING ---
+tcoupl                  = V-rescale     ; Robust thermostat that generates a correct kinetic ensemble
+tc-grps                 = Protein Non-Protein ; Couple protein and solvent separately (best practice)
+tau_t                   = 1.0     1.0   ; **CRITICAL: Looser coupling (1.0 ps) for more natural dynamics**
+ref_t                   = 310     310   ; Reference temperature in K (37 C)
+
+; --- PRESSURE COUPLING (off for NVT) ---
+pcoupl                  = no
+
+; --- VELOCITY GENERATION ---
+gen_vel                 = yes           ; Generate initial velocities from a Maxwell distribution
+gen_temp                = 310           ; Temperature for initial velocities
+gen_seed                = -1            ; Generate a random seed

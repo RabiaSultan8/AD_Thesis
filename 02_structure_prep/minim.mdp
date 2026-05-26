@@ -1,0 +1,19 @@
+; minim.mdp - High-quality energy minimization
+; --- RUN PARAMETERS ---
+integrator              = steep         ; Steepest descent for robust initial minimization
+nsteps                  = 50000         ; Max number of steps, but will stop when converged
+
+; --- CONVERGENCE CRITERIA ---
+emtol                   = 1000.0        ; Stop when max force is < 1000.0 kJ/mol/nm (standard)
+emstep                  = 0.01          ; Initial step size
+
+; --- NEIGHBOR SEARCHING & INTERACTIONS (Consistent across all files) ---
+cutoff-scheme           = Verlet        ; Modern, efficient neighbor searching
+ns_type                 = grid          ; Use a grid for neighbor list construction
+nstlist                 = 40            ; Update neighbor list every 40 fs (Verlet handles buffering)
+pbc                     = xyz           ; 3D periodic boundary conditions
+
+; --- ELECTROSTATICS & VDW ---
+coulombtype             = PME           ; Particle Mesh Ewald for accurate long-range electrostatics
+rcoulomb                = 1.2           ; Larger cutoff for better PME/direct space balance
+rvdw                    = 1.2           ; Larger cutoff to match rcoulomb (best practice)
