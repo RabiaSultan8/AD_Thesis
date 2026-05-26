@@ -116,4 +116,7 @@ echo -e "Protein" | gmx sasa \
     -o sasa_protein.xvg \
     -tu ns
 
+echo "===== STEP 7: Cluster Analysis ====="
+echo "Backbone" | gmx cluster -f md_fit.xtc -s ../md.tpr -method gromos -cutoff 0.3 -g cluster.log -b 10000
+
 echo "✅ ALL DONE ✅"
