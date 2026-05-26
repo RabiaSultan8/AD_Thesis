@@ -13,6 +13,7 @@ The scripts must be executed in the following order to prepare the structures, c
 ### 2. Environment Setup
 * **`patch_master_runcns.py`**: *CRITICAL.* Modifies the HADDOCK `run.cns` master configuration file specifically for RNA-protein docking. It updates the topology/parameter files to `dna-rna-allatom-hj-opls-1.3`, sets dielectric constants (`epsilon_0` and `epsilon_1`) to 78.0 to reflect the highly charged aqueous environment of nucleic acids, and enables DNA/RNA restraints. 
 * **`setup_haddock_runs.py`**: Automates the creation of isolated run directories for all 40 pairs, injecting the paired PDBs, the `.tbl` files, and the `run.param` file.
+* **`launch_haddock_runs.sh`**: Automates the sequential initialization (run1 setup) and the massively parallel execution of the HADDOCK pipeline (rigid-body, semi-flexible, and explicit solvent refinement) across all 40 pairs.
 
 ### 3. Scoring & Ranking
 * *(HADDOCK 2.5 is executed natively within each run directory).*
